@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IframeContent</title>
+</head>
+
+<body>
+    <h1>iFrame!</h1>
+    <script>
+        var url = (window.location != window.parent.location)
+            ? document.referrer
+            : document.location.href;
+        
+
+        /* console.log("(window.location != window.parent.location) :  " + (window.location != window.parent.location))
+        
+                   
+        console.log(window.parent.location.origin) */
+
+        window.addEventListener('message', function (e) {
+            // Get the sent data
+            const data = e.data
+            console.log(data)
+
+            // If you encode the message in JSON before sending them,
+            // then decode here
+            // const decoded = JSON.parse(data);
+        });
+    </script>
+</body>
+
+</html>
