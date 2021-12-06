@@ -15,7 +15,8 @@
             ? document.referrer
             : document.location.href;
         
-        console.log(document.referrer);
+        console.log("Document.referrer: ", document.referrer);
+        console.log("new URL(document.referrer).origin: ", new URL(document.referrer).origin)
         /* console.log("(window.location != window.parent.location) :  " + (window.location != window.parent.location))
         
                    
