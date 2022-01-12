@@ -35,3 +35,108 @@
 </body>
 
 </html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+      j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-M9G5HTT');
+  </script>
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Embedded</title>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M9G5HTT" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+    
+  <p>
+    The iframe:
+  </p>
+  <iframe data-stager-ticketshop id="ticketshop-all-iframe" height="650" width="400" frameborder="0" src="about:blank" style="border: 0px; background: transparent; max-width: 100%;"></iframe>
+  <script>
+    /* Script for proper tracking: https://intercom.help/stager/nl/articles/4227424-script-voor-optimaal-conversie-tracken-met-embedded-en-minimal-ticket-shops */
+    setTimeout(function(){
+      const params = window.location.search;
+      const ticketshopUrl = 'https://onlinemarketing.stager.dev/Ticketshop%20GTM/tickets'
+      const src = ticketshopUrl + params
+      const ifrm = document.querySelector('iframe#ticketshop-all-iframe');
+      ifrm.setAttribute('src', src);
+    }, 1000);
+  </script>
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{438938033391033}');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id={438938033391033}&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
+  
+  <script>
+  (function() {
+    // ============================ THE PARENT =======================
+
+    // Maximum time in milliseconds to wait for origin to load.
+    var maxTime = 2000;
+
+    var childOrigin;
+
+    var pollInterval = 200;
+
+    var pollCallback = function() {
+      if (document.getElementById("ticketshop-all-iframe")) {
+          maxTime -= pollInterval;
+          if (maxTime <= 0) window.clearInterval(poll);
+          childOrigin = new URL(document.getElementById("ticketshop-all-iframe").src).origin;
+      }
+    }
+
+    var postCallback = function(event) {
+      console.log("[PARENT] childOrigin: ", childOrigin)
+
+      if (event.origin !== childOrigin) return;
+      if (event.data !== 'childReady' && !event.data.event) return;
+      
+      if (event.data === 'childReady') {
+        console.log("[PARENT] childReady received")
+        // Send event that parent is ready
+        event.source.postMessage('parentReady', event.origin);
+      }
+
+      // Push dataLayer message from iframe to dataLayer of parent
+      if (event.data.event) {
+        window.dataLayer = window.dataLayer || [];
+        console.log("[PARENT] event.data to push into datalayer: ", event.data)
+        window.dataLayer.push(event.data);
+      }
+    };
+
+    var poll = window.setInterval(pollCallback, pollInterval);
+    
+    // Start listening for messages from child frame
+    window.addEventListener('message', postCallback);
+  })();
+</script>
+  
+</body>
+</html>
