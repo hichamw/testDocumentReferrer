@@ -28,11 +28,12 @@
     /* Script for proper tracking: https://intercom.help/stager/nl/articles/4227424-script-voor-optimaal-conversie-tracken-met-embedded-en-minimal-ticket-shops */
     setTimeout(function(){
       const params = window.location.search;
-      const origin = window.location.origin;
-      const ticketshopUrl = 'https://onlinemarketing.stager.dev/Ticketshop%20GTM/tickets?url=' + origin
-      const src = ticketshopUrl + params;
+      const ticketshopUrl = 'https://onlinemarketing.stager.dev/Ticketshop%20GTM/tickets';
+      const src = new URL(ticketshopUrl + params);
+      const origin = window.location.origin; 
+      src.searchParams.append('parentOrigin', origin);
       const ifrm = document.querySelector('iframe#ticketshop-all-iframe');
-      ifrm.setAttribute('src', src);
+      ifrm.setAttribute('src', src.href);
     }, 1000);
   </script>
   
