@@ -55,8 +55,8 @@
     }
 
     var postCallback = function(event) {
-      console.log("[PARENT] childOrigin: ", childOrigin)
-
+      console.log("[PARENT] childOrigin: ", childOrigin);
+      console.log("[PARENT] Received event: ", event);
       if (event.origin !== childOrigin) return;
       if (event.data !== 'childReady' && !event.data.event) return;
       
