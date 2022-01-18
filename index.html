@@ -29,11 +29,9 @@
     setTimeout(function(){
       const params = window.location.search;
       const ticketshopUrl = 'https://onlinemarketing.stager.dev/Ticketshop%20GTM/tickets';
-      const src = new URL(ticketshopUrl + params);
-      const origin = window.location.origin; 
-      src.searchParams.append('parentOrigin', origin);
+      const src = ticketshopUrl + params;
       const ifrm = document.querySelector('iframe#ticketshop-all-iframe');
-      ifrm.setAttribute('src', src.href);
+      ifrm.setAttribute('src', src);
     }, 1000);
   </script>
   
@@ -47,12 +45,22 @@
     var childOrigin;
 
     var pollInterval = 200;
+    
+    const addParentOriginToSrc = function() {
+      let src = new URL(document.getElementById('ticketshop-all-iframe').src);
+      const origin = window.location.origin;
+      if(!src.searchParams.has('parentOrigin')){
+        src.searchParams.append('parentOrigin', origin);
+        document.getElementById('ticketshop-all-iframe').src = src.href;
+      }
+    }
 
     var pollCallback = function() {
       if (document.getElementById("ticketshop-all-iframe")) {
-          maxTime -= pollInterval;
-          if (maxTime <= 0) window.clearInterval(poll);
-          childOrigin = new URL(document.getElementById("ticketshop-all-iframe").src).origin;
+        maxTime -= pollInterval;
+        if (maxTime <= 0) window.clearInterval(poll);
+        addParentOriginToSrc();
+        childOrigin = new URL(document.getElementById("ticketshop-all-iframe").src).origin;
       }
     }
 
